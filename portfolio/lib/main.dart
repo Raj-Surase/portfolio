@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resume/styles/apptheme.dart';
+import 'package:portfolio/components/button.dart';
+import 'package:portfolio/styles/apptheme.dart';
+import 'package:portfolio/styles/icons.dart';
+import 'package:portfolio/styles/links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -51,19 +54,31 @@ class PortfolioScreen extends StatelessWidget {
       // ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: AppTheme.isLargeScreen(context)
+              ? EdgeInsets.fromLTRB(
+                  AppTheme.screenWidth(context) * 0.1,
+                  AppTheme.screenHeight(context) * 0.1,
+                  AppTheme.screenWidth(context) * 0.1,
+                  AppTheme.screenHeight(context) * 0.1,
+                )
+              : EdgeInsets.fromLTRB(
+                  AppTheme.screenWidth(context) * 0.1,
+                  AppTheme.screenHeight(context) * 0.1,
+                  AppTheme.screenWidth(context) * 0.1,
+                  AppTheme.screenHeight(context) * 0.1,
+                ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: AppTheme.screenHeight(context) * 0.2,
-              ),
               Section1(),
-              SizedBox(height: 32),
-              SizedBox(
-                height: AppTheme.screenHeight(context) * 0.7,
-                child: Section2(),
-              ),
+              AppTheme.isLargeScreen(context)
+                  ? SizedBox(
+                      height: AppTheme.screenHeight(context) * 0.2,
+                    )
+                  : SizedBox(
+                      height: AppTheme.screenHeight(context) * 0.1,
+                    ),
+              Section2(),
               SizedBox(height: 32),
               SizedBox(
                 height: AppTheme.screenHeight(context) * 0.7,
@@ -89,33 +104,45 @@ class Section1 extends StatelessWidget {
       builder: (context, constraints) {
         bool isLargeScreen = constraints.maxWidth > 600;
         return isLargeScreen
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+            ? Column(
                 children: [
-                  SizedBox(
-                    width: AppTheme.screenWidth(context) * 0.4,
-                    child: _buildTextContent(context),
-                  ),
-                  // SizedBox(width: 16),
-                  Container(
-                    height: AppTheme.screenHeight(context) * 0.4,
-                    width: AppTheme.screenWidth(context) * 0.4,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: AssetImage('assets/profile.jpg')),
-                    ),
+                  // SizedBox(
+                  //   height: AppTheme.screenHeight(context) * 0.2,
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: AppTheme.screenWidth(context) * 0.3,
+                        child: _buildTextContent(context),
+                      ),
+                      // SizedBox(width: 16),
+                      Container(
+                        height: AppTheme.screenHeight(context) * 0.4,
+                        width: AppTheme.screenWidth(context) * 0.4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                              image: AssetImage('assets/profile.jpg')),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               )
             : Column(
                 children: [
                   _buildTextContent(context),
-                  SizedBox(height: 16),
-                  CircleAvatar(
-                    radius: 80,
-                    backgroundImage: NetworkImage('https://dummyimage.com/160'),
+                  SizedBox(height: 60),
+                  Container(
+                    height: AppTheme.screenHeight(context) * 0.4,
+                    width: AppTheme.screenWidth(context) * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                          image: AssetImage('assets/profile.jpg')),
+                    ),
                   ),
                 ],
               );
@@ -126,6 +153,7 @@ class Section1 extends StatelessWidget {
   Widget _buildTextContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text('HEY THERE!', style: AppTheme.headline3),
         SizedBox(height: 8),
@@ -138,92 +166,54 @@ class Section1 extends StatelessWidget {
         SizedBox(height: 16),
         Row(
           children: [
-            IconButton(
-              icon: Image.asset(
-                'assets/twitter.png',
-                height: 36,
-                width: 36,
-              ),
-              onPressed: () => launch('https://x.com/raj-surase'),
-            ),
-            IconButton(
-              icon: Image.asset(
-                'assets/linkedin.png',
-                height: 36,
-                width: 36,
-              ),
-              onPressed: () => launch('https://linkedin.com/raj-surase'),
-            ),
-            IconButton(
-              icon: Image.asset(
-                'assets/github.png',
-                height: 36,
-                width: 36,
-              ),
-              onPressed: () => launch('https://github.com/raj-surase'),
-            ),
-            IconButton(
-              icon: Image.asset(
-                'assets/gmail.png',
-                height: 36,
-                width: 36,
-              ),
-              onPressed: () => launch('mailto:rajsurase3@gmail.com'),
-            ),
-            IconButton(
-              icon: Icon(Icons.picture_as_pdf),
-              onPressed: () => launch('https://your-resume-link.com'),
-            ),
+            SocialButton(icon: AssetIcons.x, link: AssetLinks.x),
+            SocialButton(icon: AssetIcons.linkedin, link: AssetLinks.linkedin),
+            SocialButton(icon: AssetIcons.github, link: AssetLinks.github),
+            SocialButton(icon: AssetIcons.gmail, link: AssetLinks.gmail),
+            SocialButton(icon: AssetIcons.resume, link: AssetLinks.resume),
           ],
-        ),
-        ElevatedButton(
-          onPressed: () => _showSocialMediaDialog(context),
-          child: Text('Connect with me'),
-          style: ButtonStyle(
-              backgroundColor:
-                  WidgetStatePropertyAll(AppTheme.backgroundColor)),
         ),
       ],
     );
   }
 
-  void _showSocialMediaDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('X'),
-                onTap: () => launch('https://x.com'),
-              ),
-              ListTile(
-                leading: Icon(Icons.linked_camera),
-                title: Text('LinkedIn'),
-                onTap: () => launch('https://linkedin.com'),
-              ),
-              ListTile(
-                leading: Icon(Icons.code),
-                title: Text('GitHub'),
-                onTap: () => launch('https://github.com'),
-              ),
-              ListTile(
-                leading: Icon(Icons.email),
-                title: Text('Email'),
-                onTap: () => launch('mailto:yourmail@example.com'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showSocialMediaDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16),
+  //         ),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             ListTile(
+  //               leading: Icon(Icons.account_circle),
+  //               title: Text('X'),
+  //               onTap: () => launch('https://x.com'),
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.linked_camera),
+  //               title: Text('LinkedIn'),
+  //               onTap: () => launch('https://linkedin.com'),
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.code),
+  //               title: Text('GitHub'),
+  //               onTap: () => launch('https://github.com'),
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.email),
+  //               title: Text('Email'),
+  //               onTap: () => launch('mailto:yourmail@example.com'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 class Section2 extends StatelessWidget {
@@ -231,25 +221,36 @@ class Section2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text('My Career', style: AppTheme.headline1),
         SizedBox(height: 16),
-        Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur et dolor eget massa suscipit suscipit.',
-          style: AppTheme.bodyText1,
+        SizedBox(
+          width: AppTheme.isLargeScreen(context)
+              ? AppTheme.screenWidth(context) * 0.4
+              : AppTheme.screenWidth(context) * 0.8,
+          child: Text(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur et dolor eget massa suscipit suscipit.',
+            style: AppTheme.bodyText1,
+          ),
         ),
-        SizedBox(height: 16),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            bool isLargeScreen = constraints.maxWidth > 600;
-            return isLargeScreen
-                ? Row(
-                    children: _buildCareerItems(context),
-                  )
-                : Column(
-                    children: _buildCareerItems(context),
-                  );
-          },
+        SizedBox(height: 30),
+        Row(
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                bool isLargeScreen = constraints.maxWidth > 600;
+                return isLargeScreen
+                    ? Column(
+                        children: _buildCareerItems(context),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _buildCareerItems(context),
+                      );
+              },
+            ),
+          ],
         ),
       ],
     );
@@ -261,16 +262,12 @@ class Section2 extends StatelessWidget {
       'Web',
       'Front-End',
       'Back-End',
-      'Prototyping',
-      'Coding',
       'Database'
     ];
     return items
         .map((item) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Chip(
-                label: Text(item, style: AppTheme.bodyText1),
-              ),
+              child: Text(item, style: AppTheme.bodyText1),
             ))
         .toList();
   }

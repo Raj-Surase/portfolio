@@ -31,6 +31,10 @@ class AppTheme {
         color: Color(0xFFDDDEE4),
       );
 
+  static bool isLargeScreen(BuildContext context) {
+    return MediaQuery.of(context).size.width > 600;
+  }
+
   static double screenWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
