@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:portfolio/theme/colors.dart';
 import 'package:portfolio/theme/typography.dart';
@@ -14,11 +16,28 @@ class CustomAppBar extends StatefulWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  int activeIndex = 0; // No tab is active initially
+  int activeIndex = 0; // Initial active tab index
+  int previousIndex = 0; // Track the previous index for direction of animation
 
   void setActiveTab(int index) {
-    setState(() {
-      activeIndex = index;
+    int direction =
+        index > activeIndex ? 1 : -1; // Determine animation direction
+    int steps = (index - activeIndex).abs(); // Number of steps required
+
+    for (int i = 1; i <= steps; i++) {
+      // Animate through each tab with delay
+      Timer(Duration(milliseconds: 200 * i), () {
+        setState(() {
+          activeIndex += direction;
+        });
+      });
+    }
+
+    // Finalize the index after the animation completes
+    Timer(Duration(milliseconds: 200 * (steps + 1)), () {
+      setState(() {
+        activeIndex = index;
+      });
     });
   }
 
