@@ -24,8 +24,9 @@ class _HomeDesktopState extends State<_HomeDesktop> {
             Expanded(
                 child: Column(
               children: [
-                CustomAppBar(),
-                CustomContainer(),
+                CustomAppBar(
+                  viewModel: widget.viewModel,
+                ),
               ],
             )),
           ],

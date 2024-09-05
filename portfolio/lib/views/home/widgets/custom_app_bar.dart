@@ -5,9 +5,13 @@ import 'package:portfolio/theme/colors.dart';
 import 'package:portfolio/theme/typography.dart';
 import 'package:portfolio/theme/values.dart';
 import 'package:portfolio/theme/widgets.dart';
+import 'package:portfolio/views/home/home_view_model.dart';
 
 class CustomAppBar extends StatefulWidget {
-  const CustomAppBar({
+  final HomeViewModel viewModel;
+
+  CustomAppBar({
+    required this.viewModel,
     super.key,
   });
 
@@ -16,31 +20,6 @@ class CustomAppBar extends StatefulWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  int activeIndex = 0; // Initial active tab index
-  int previousIndex = 0; // Track the previous index for direction of animation
-
-  void setActiveTab(int index) {
-    int direction =
-        index > activeIndex ? 1 : -1; // Determine animation direction
-    int steps = (index - activeIndex).abs(); // Number of steps required
-
-    for (int i = 1; i <= steps; i++) {
-      // Animate through each tab with delay
-      Timer(Duration(milliseconds: 200 * i), () {
-        setState(() {
-          activeIndex += direction;
-        });
-      });
-    }
-
-    // Finalize the index after the animation completes
-    Timer(Duration(milliseconds: 200 * (steps + 1)), () {
-      setState(() {
-        activeIndex = index;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,25 +34,25 @@ class _CustomAppBarState extends State<CustomAppBar> {
           Expanded(
             child: AppBarTab(
               title: "Projects",
-              isActive: activeIndex == 0,
+              isActive: widget.viewModel.activeIndex == 0,
               isFirst: true,
-              onTap: () => setActiveTab(0),
+              onTap: () => widget.viewModel.setActiveTab(0),
             ),
           ),
           Expanded(
             child: AppBarTab(
               title: "Resume",
-              isActive: activeIndex == 1,
+              isActive: widget.viewModel.activeIndex == 1,
               isMid: true,
-              onTap: () => setActiveTab(1),
+              onTap: () => widget.viewModel.setActiveTab(1),
             ),
           ),
           Expanded(
             child: AppBarTab(
               title: "Contact",
-              isActive: activeIndex == 2,
+              isActive: widget.viewModel.activeIndex == 2,
               isLast: true,
-              onTap: () => setActiveTab(2),
+              onTap: () => widget.viewModel.setActiveTab(2),
             ),
           ),
         ],

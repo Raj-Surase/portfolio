@@ -4,7 +4,8 @@ import 'package:portfolio/theme/values.dart';
 import 'package:portfolio/theme/widgets.dart';
 
 class CustomContainer extends StatefulWidget {
-  const CustomContainer({super.key});
+  Widget content;
+  CustomContainer({required this.content, super.key});
 
   @override
   State<CustomContainer> createState() => _CustomContainerState();
@@ -27,6 +28,7 @@ class _CustomContainerState extends State<CustomContainer> {
         border: WidgetConstants.containerBorder,
         borderRadius: BorderRadius.circular(ValueConstants.radius20Px(context)),
       ),
+      child: widget,
     );
   }
 }
