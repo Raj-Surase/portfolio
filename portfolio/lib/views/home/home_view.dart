@@ -6,6 +6,7 @@ import 'package:portfolio/theme/typography.dart';
 import 'package:portfolio/theme/values.dart';
 import 'package:portfolio/theme/widgets.dart';
 import 'package:portfolio/views/home/widgets/custom_app_bar.dart';
+import 'package:portfolio/views/home/widgets/custom_container.dart';
 import 'package:portfolio/views/home/widgets/information_tab.dart';
 import 'package:portfolio/widgets/social_button.dart';
 import 'package:responsive_builder/responsive_builder.dart';
